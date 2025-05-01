@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        /* Đặt kiểu chữ và căn giữa cho toàn bộ trang */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        /* Định dạng tiêu đề chính */
+        h2 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            margin: 0;
+        }
+
+        /* Định dạng liên kết đăng xuất */
+        a.logout {
+            display: inline-block;
+            margin: 20px 0;
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Định dạng tiêu đề danh sách sản phẩm */
+        h3 {
+            color: #333;
+            margin-top: 40px;
+        }
+
+        /* Định dạng container chứa danh sách sản phẩm */
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0;
+            list-style: none;
+        }
+
+        /* Định dạng từng sản phẩm */
+        .product-item {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        /* Định dạng tên sản phẩm */
+        .product-item p {
+            margin: 0 0 10px;
+        }
+
+        /* Định dạng giá sản phẩm */
+        .product-item .price {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        /* Định dạng nút thêm vào giỏ hàng */
+        .product-item button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Hiệu ứng khi di chuột qua nút */
+        .product-item button:hover {
+            background-color: #45a049;
+        }
+
+        /* Định dạng liên kết xem giỏ hàng */
+        a.cart {
+            display: inline-block;
+            margin: 20px 0;
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>Chào mừng, {{ name }}!</h2>
+    <p>Chúc mừng bạn đã đăng nhập thành công.</p>
+    <a href="{{ url_for('logout') }}" class="logout">Đăng xuất</a>
+
+    <h3>Danh sách sản phẩm</h3>
+    <ul class="product-list">
+        {% for product in products %}
+            <li class="product-item">
+                <p><strong>{{ product[1] }}</strong></p>
+                <p class="price">Giá: {{ product[2] }} VND</p>
+                <form action="/add_to_cart" method="POST">
+                    <input type="hidden" name="product_id" value="{{ product[0] }}">
+                    <button type="submit">Thêm vào giỏ hàng</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('cart') }}" class="cart">Xem giỏ hàng</a>
+
+    <script>
+        // Tự động chuyển hướng đến trang giỏ hàng sau khi thêm sản phẩm
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', () => {
+                setTimeout(() => {
+                    window.location.href = '{{ url_for("cart") }}';
+                }, 500); // Chờ 0.5 giây để xử lý
+            });
+        });
+    </script>
+</body>
+</html>

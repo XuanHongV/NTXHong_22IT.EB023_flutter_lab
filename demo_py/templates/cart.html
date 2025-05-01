@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2 {
+            color: #333;
+            margin-top: 20px;
+        }
+        .cart-container {
+            width: 80%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .cart-item p {
+            margin: 0;
+        }
+        .cart-item button {
+            background-color: #ff4d4d;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .cart-item button:hover {
+            background-color: #ff1a1a;
+        }
+        .checkout {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .checkout button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .checkout button:hover {
+            background-color: #45a049;
+        }
+        .links {
+            margin-top: 20px;
+        }
+        .links a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>Giỏ hàng của bạn</h2>
+
+    <div class="cart-container">
+        {% if products %}
+            {% for product in products %}
+                <div class="cart-item">
+                    <p><strong>{{ product[1] }}</strong> - {{ product[2] }} VND</p>
+                    <form action="/remove_from_cart" method="POST">
+                        <input type="hidden" name="product_id" value="{{ product[0] }}">
+                        <button type="submit">Xóa</button>
+                    </form>
+                </div>
+            {% endfor %}
+            <div class="checkout">
+                <form action="/checkout" method="POST">
+                    <button type="submit">Thanh toán</button>
+                </form>
+            </div>
+        {% else %}
+            <p>Giỏ hàng trống.</p>
+        {% endif %}
+    </div>
+
+    <div class="links">
+        <a href="{{ url_for('dashboard') }}">Tiếp tục mua sắm</a>
+        <a href="{{ url_for('logout') }}">Đăng xuất</a>
+    </div>
+</body>
+</html>
